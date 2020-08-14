@@ -8,7 +8,11 @@ module.exports = {
   photos(f, name) {
     for (const photo of f) {
       const file = `./pages/${utils.fsFriendly(name)}/photos/${photo.substring(photo.lastIndexOf("/") + 1)}`
-      request(photo).pipe(fs.createWriteStream(file))
+      request.head(photo, (err, res, body) => {
+        request(photo)
+          .pipe(fs.createWriteStream(file))
+          .on('close', () => {})
+      })
     }
   },
   tables(f, name) {
@@ -40,18 +44,37 @@ module.exports = {
       completedTable += header.text + '\n'
       completedTable += content + '\n'
     }
-    fs.writeFileSync(`./pages/${utils.fsFriendly(name)}/tables.md`, completedTable)
+    fs.promises.writeFile(`./pages/${utils.fsFriendly(name)}/tables.md`, completedTable)
   },
   info(f, name) {
-  },
-  links(f, name) {
+    fs.promises.writeFile(`./pages/${utils.fsFriendly(name)}/info.json`, JSON.stringify(f))
   },
   summary(f, name) {
+    fs.promises.writeFile(`./pages/${utils.fsFriendly(name)}/summary.md`, f)
   },
   content(f, name) {
-  },
-  categories(f, name) {
+    let formatedContent = `# ${name.toUpperCase()}\n\n`
+    for (const item of f) {
+      formatedContent += `## ${item.title.toUpperCase()}\n${(item.content != '') ? `${item.content}\n` : ``}\n`
+      if (item.items != undefined) {
+        for (const subItem of item.items) {
+          formatedContent += `### ${subItem.title.toUpperCase()}\n${(subItem.content != '') ? `${subItem.content}\n` : ``}\n`
+          if (subItem.items != undefined) {
+            for (const subsubItem of subItem.items) {
+              formatedContent += `#### ${subsubItem.title.toUpperCase()}\n${(subsubItem.content != '') ? `${subsubItem.content}\n` : ``}\n`
+            }
+          }
+        }
+      }
+    }
+    fs.promises.writeFile(`./pages/${utils.fsFriendly(name)}/content.md`, formatedContent)
   },
   references(f, name) {
+    let formatedReferences = ''
+    for (const link of f) {
+      const newLink = link.substring(link.indexOf('//')+2).substring(0, link.substring(link.indexOf('//')+2).indexOf('/'))
+      formatedReferences += `[${newLink}](${link})\n`
+    }
+    fs.promises.writeFile(`./pages/${utils.fsFriendly(name)}/references.md`, formatedReferences)
   },
 }

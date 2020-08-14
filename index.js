@@ -17,17 +17,22 @@ const createPage = (name) => {
       page.images().then(c => { components.photos(c, name) }).catch(console.log)
       page.tables().then(c => { components.tables(c, name) }).catch(console.log)
       page.info().then(c => { components.info(c, name) }).catch(console.log)
-      page.links().then(c => { components.links(c, name) }).catch(console.log)
       page.summary().then(c => { components.summary(c, name) }).catch(console.log)
       page.content().then(c => { components.content(c, name) }).catch(console.log)
-      page.categories().then(c => { components.categories(c, name) }).catch(console.log)
       page.references().then(c => { components.references(c, name) }).catch(console.log)
     })
     .catch(console.log)
 
+  utils.log(`${name} has been generated`)
+
 }
 
-// wiki().random(1).then(([item]) => createPage(item)).catch(console.log)
+setInterval(() => {
+  wiki().random(1).then(([item]) => createPage(item)).catch(console.log)
+}, 10000)
 
 // This is for testing purposes
-createPage('2018_President_of_the_Senate_of_the_Czech_Republic_election')
+// createPage('2018_President_of_the_Senate_of_the_Czech_Republic_election')
+
+// createPage('Trixie_Tagg')
+// createPage('Chemalsky District')
