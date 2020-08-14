@@ -1,0 +1,23 @@
+{
+  "name": "wiki-page-grabber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N-F9/wiki-page-grabber.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/N-F9/wiki-page-grabber/issues"
+  },
+  "homepage": "https://github.com/N-F9/wiki-page-grabber#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "wikijs": "^6.0.1"
+  }
+}
